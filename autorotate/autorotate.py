@@ -4,6 +4,13 @@ import os
 import subprocess
 import sys
 
+#PARAMETERS
+count = 0
+path = os.path.abspath(os.path.dirname(os.path.abspath(__file__)))
+devicename = "'IPTS Touch'"
+penname = "'IPTS Stylus Pen (0)'"
+freq = 1.0
+
 #FUNCTIONS
 def readFile(path): #self.filename
     myDatei = open(path, "r")
@@ -23,8 +30,8 @@ def writeFile(path, myList): #self.filename
     myDatei.close()
 
 def refreshtouch():
-    os.system('xinput disable "NTRG0001:01 1B96:1B05"')
-    os.system('xinput enable "NTRG0001:01 1B96:1B05"')
+    os.system('xinput disable ' + devicename)
+    os.system('xinput enable ' + devicename)
 
 def checkdisplays():
     check_displays = "xrandr | grep -w 'connected'"
@@ -32,14 +39,6 @@ def checkdisplays():
     list_displays = str_displays.splitlines()
     int_displays = len(list_displays)
     return int_displays
-
-#PARAMETERS
-count = 0
-path = os.path.abspath(os.path.dirname(os.path.abspath(__file__)))
-devicename = "'IPTS Touch'"
-penname = "'IPTS Stylus Pen (0)'"
-freq = 5.0
-
 
 # Look for accelerometer
 while count <= 9:
@@ -82,9 +81,9 @@ while True:
                             if (they <= -1 and they >= -1100):
                                 os.system(normal)
                                 current_state = 0
-                            elif (they >= 0 and they <= 1100):
-                                os.system(inverted)
-                                current_state = 1
+                            #elif (they >= 0 and they <= 1100):
+                            #    os.system(inverted)
+                            #    current_state = 1
                         else:
                             if (thex >= 700 and thex <= 1100):
                                 os.system(right)
