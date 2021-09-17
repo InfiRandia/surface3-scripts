@@ -3,7 +3,6 @@ import time
 import os
 import subprocess
 import sys
-from gi.repository import Notify
 
 #FUNCTIONS
 def readFile(path): #self.filename
@@ -37,8 +36,8 @@ def checkdisplays():
 #PARAMETERS
 count = 0
 path = os.path.abspath(os.path.dirname(os.path.abspath(__file__)))
-devicename = "'NTRG0001:01 1B96:1B05'"
-penname = "'NTRG0001:01 1B96:1B05 Pen'"
+devicename = "'IPTS Touch'"
+penname = "'IPTS Stylus Pen (0)'"
 freq = 5.0
 
 
@@ -79,18 +78,18 @@ while True:
                     they = float(fy.readline())
                     thez = float(fz.readline())
                     if checkdisplays() == 1:
-                        if (thex >= 65000 or thex <=650):
-                            if (they <= 65000 and they >= 64000):
+                        if (thex >= -650 and thex <=650 and thez > -350):
+                            if (they <= -1 and they >= -1100):
                                 os.system(normal)
                                 current_state = 0
-                            if (they >= 650 and they <= 1100):
+                            elif (they >= 0 and they <= 1100):
                                 os.system(inverted)
                                 current_state = 1
-                        if (thex <= 64999 and thex >= 650):
-                            if (thex >= 800 and thex <= 1000):
+                        else:
+                            if (thex >= 700 and thex <= 1100):
                                 os.system(right)
                                 current_state = 2
-                            if (thex >= 64500 and thex <=64700):
+                            elif (thex <= -700 and thex >= -1100):
                                 os.system(left)
                                 current_state = 3
 
@@ -115,7 +114,7 @@ while True:
 
     print("##########################")
 #SCREEN
-    stylusProximityCommand = 'xinput query-state "NTRG0001:01 1B96:1B05 Pen" | grep Proximity | cut -d " " -f3 | cut -d "=" -f2'
+    stylusProximityCommand = 'xinput query-state ' + penname + ' | grep Proximity | cut -d " " -f3 | cut -d "=" -f2'
     stylusProximityStatus = str(subprocess.check_output(stylusProximityCommand, shell=True).lower().rstrip())
     tstatus = readFile(os.path.join(path, 'touch.txt'))
 #TOUCHSCREEN
